@@ -48,9 +48,9 @@ def turn(json_str):
         room.broadcast_board()
         game_state = room.game.game_state()
         if game_state == 'w':
-            emit("game_won", f"{player.uname} won.")
+            room.broadcast_event("game_won", f"{player.uname} won.")
         elif game_state == 'd':
-            emit("game_draw")
+            room.broadcast_event("game_draw", '')
     else:
         send("Please wait for your opponent!")
 
@@ -86,6 +86,11 @@ def on_disconnect():
 
 def _sanitize_str(string):
     return escape(str(string).strip())
+
+
+@app.route('/')
+def entry():
+    return app.send_static_file("index.html")
 
 
 if __name__ == '__main__':

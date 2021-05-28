@@ -27,6 +27,10 @@ class Room:
     def broadcast_board(self):
         emit("get_board", self.game.board, to=self.player1.ws_sid)
         emit("get_board", self.game.board, to=self.player2.ws_sid)
+    
+    def broadcast_event(self, event, message):
+        emit(event, message, to=self.player1.ws_sid)
+        emit(event, message, to=self.player2.ws_sid)
 
     def add_player(self, new_player):
         if self._add_player(new_player):
