@@ -8,7 +8,7 @@ class Player:
         self.uid = uid
         self.uname = uname
         self.game_character = game_character
-        self.ws_sid = ws_sid
+        self.ws_sid = ws_sid  # websocket sid(for sending messages to a particular player)
 
     def to_dict(self):
         return {"uid": self.uid, "uname": self.uname, "game_character": self.game_character, "ws_sid": self.ws_sid}
