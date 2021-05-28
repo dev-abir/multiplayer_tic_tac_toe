@@ -43,16 +43,17 @@ def turn(json_str):
         if _room.room_id == room_id:
             room = _room
             break
-    player = room.player1 if player_uid == room.player1.uid else room.player1
-    if room.add_turn(this_player_id=player_uid, character=player.game_character, posX=posX, posY=posY):
+    player = room.player1 if player_uid == room.player1.uid else room.player2
+    message = room.add_turn(this_player_id=player_uid, character=player.game_character, posX=posX, posY=posY)
+    if message is not None:
+        send(message)
+    else:
         room.broadcast_board()
         game_state = room.game.game_state()
         if game_state == 'w':
             room.broadcast_event("game_won", f"{player.uname} won.")
         elif game_state == 'd':
             room.broadcast_event("game_draw", '')
-    else:
-        send("Please wait for your opponent!")
 
 
 @socketio.on("disconnect")
@@ -64,19 +65,23 @@ def on_disconnect():
     for room in rooms:
         if room.room_id == room_id:
             room.game.reset_board()
-            if room.player1.uid == player_uid:
+            if room.player1 is not None and room.player1.uid == player_uid:
                 if room.player2 is not None:  # TODO: to delete empty rooms (test it once)
-                    send(f"Player {room.player1.uname} is disconnected.\nPlease wait for new players to join.",
-                         to=room.player2.ws_sid)
+                    send(f"Player {room.player1.uname} is disconnected.\n"
+                         "Please wait for new players to join.\n"
+                         "Sorry, your game character will be 'x' from now...", to=room.player2.ws_sid)
                     room.player1 = None
+                    room.player2.game_character = 'x'  # TODO: hard code for now...
                 else:
                     rooms.remove(room)
                 return
-            elif room.player2.uid == player_uid:
+            elif room.player2 is not None and room.player2.uid == player_uid:
                 if room.player1 is not None:  # TODO: to delete empty rooms (test it once)
-                    send(f"Player {room.player2.uname} is disconnected.\nPlease wait for new players to join.",
-                         to=room.player1.ws_sid)
+                    send(f"Player {room.player2.uname} is disconnected.\n"
+                         "Please wait for new players to join.\n"
+                         "Sorry, your game character will be 'x' from now...", to=room.player1.ws_sid)
                     room.player2 = None
+                    room.player1.game_character = 'x'  # TODO: hard code for now...
                 else:
                     rooms.remove(room)
                 return

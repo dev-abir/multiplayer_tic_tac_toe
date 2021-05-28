@@ -36,7 +36,7 @@ class Room:
         if self._add_player(new_player):
             other_player = self.player1 if new_player != self.player1 else self.player2
             if other_player is not None:  # check if the new player joined is the 1st player of the room...
-                other_player.game_character = 'o'
+                new_player.game_character = 'o'
                 send("Sorry, you are forced to use 'o', as your game character.")
                 send(f"You are playing with {other_player.uname}", to=new_player.ws_sid)
                 send(f"You are playing with {new_player.uname}", to=other_player.ws_sid)
@@ -49,7 +49,9 @@ class Room:
 
     def add_turn(self, this_player_id, character, posX, posY):
         other_player = self.player1 if this_player_id != self.player1.uid else self.player2
-        if other_player is not None:
+        if other_player is None:
+            return "Illegal turn!"
+        else:
             return self.game.add_turn_internal(character, posX, posY)
 
     def _add_player(self, player):

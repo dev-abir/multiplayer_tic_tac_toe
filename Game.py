@@ -32,7 +32,9 @@ class Game:
 
     def add_turn_internal(self, character, posX, posY):
         if self._last_character_turned == character:
-            return False
-        self.board[posX][posY] = character
-        self._last_character_turned = character
-        return True
+            return "Please wait for your opponent!"
+        elif self.board[posX][posY] != '-':
+            return "Illegal turn!"
+        else:
+            self.board[posX][posY] = character
+            self._last_character_turned = character
