@@ -1,7 +1,7 @@
 class Game:
     def __init__(self):
         self.board = [['-', '-', '-'], ['-', '-', '-'], ['-', '-', '-']]  # don't use [['-'] * 3] * 3
-        self._last_character_turned = None
+        self._last_character_turned = None  # to track which player has given the last turn
 
     def reset_board(self):
         self.board = [['-', '-', '-'], ['-', '-', '-'], ['-', '-', '-']]
