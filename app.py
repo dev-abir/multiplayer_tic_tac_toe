@@ -26,8 +26,8 @@ def join(message):
             return  # if add player is success, exit from this func
 
     # if no rooms are empty, create a new one...
-    rooms.append(Room(room_id=len(rooms) + 1, player1=new_player, player2=None))
     session["room_id"] = len(rooms) + 1
+    rooms.append(Room(room_id=len(rooms) + 1, player1=new_player, player2=None))
     emit("player_data", new_player.to_dict())
     send("Please wait for new players to join.")
 
