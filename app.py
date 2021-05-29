@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, request, session, escape
 from flask_socketio import SocketIO, emit, send
 
@@ -16,21 +18,10 @@ player_count = 1
 def join(message):
     # TODO: for now, forcefully put 'x' as game character
     global player_count  # TODO: may be a bad hack?
-    new_player = Player(uid=player_count, uname=_sanitize_str(message["uname"]), game_character='x', ws_sid=request.sid)
+    new_player = Player(uid=player_count, uname=_sanitize_str(message["uname"]), game_character='x', room_id=None, ws_sid=request.sid)
     session["player_uid"] = player_count
     player_count += 1
-    for room in rooms:
-        if room.add_player(new_player):
-            session["room_id"] = room.room_id
-            emit("player_data", new_player.to_dict())
-            return  # if add player is success, exit from this func
-
-    # if no rooms are empty, create a new one...
-    session["room_id"] = len(rooms) + 1
-    rooms.append(Room(room_id=len(rooms) + 1, player1=new_player, player2=None))
-    emit("player_data", new_player.to_dict())
-    send("Please wait for new players to join.")
-
+    _allot_room(new_player)
 
 @socketio.event
 def turn(json_str):
@@ -70,23 +61,43 @@ def on_disconnect():
                     send(f"Player {room.player1.uname} is disconnected.\n"
                          "Please wait for new players to join.\n"
                          "Sorry, your game character will be 'x' from now...", to=room.player2.ws_sid)
-                    room.player1 = None
                     room.player2.game_character = 'x'  # TODO: hard code for now...
+                    _allot_room(room.player2)
                 else:
                     rooms.remove(room)
+                room.player1 = None
                 return
             elif room.player2 is not None and room.player2.uid == player_uid:
                 if room.player1 is not None:  # TODO: to delete empty rooms (test it once)
                     send(f"Player {room.player2.uname} is disconnected.\n"
                          "Please wait for new players to join.\n"
                          "Sorry, your game character will be 'x' from now...", to=room.player1.ws_sid)
-                    room.player2 = None
                     room.player1.game_character = 'x'  # TODO: hard code for now...
+                    _allot_room(room.player1)
                 else:
                     rooms.remove(room)
+                room.player2 = None
                 return
 
     print(f"[warning] Player with uid {player_uid} isn't deleted.")
+
+
+def _allot_room(player):
+    for room in rooms:
+        if room.add_player(player):
+            session["room_id"] = room.room_id
+            player.room_id = room.room_id
+            room.broadcast_player_data()
+            return  # if add player is success, exit from this func
+
+    # if no rooms are empty, create a new one...
+    new_room_id = len(rooms) + 1
+    session["room_id"] = new_room_id
+    player.room_id = new_room_id
+    player.room_id = new_room_id
+    rooms.append(Room(room_id=new_room_id, player1=player, player2=None))
+    emit("player_data", player.to_dict(), to=player.ws_sid)
+    send("Please wait for new players to join.")
 
 
 def _sanitize_str(string):
