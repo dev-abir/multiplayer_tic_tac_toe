@@ -5,12 +5,12 @@ from flask_socketio import SocketIO, emit, send
 
 from Room import Room, Player
 
-app = Flask(__name__, static_folder="static")
+app = Flask(__name__, static_url_path='', static_folder="static")
 app.config["SECRET_KEY"] = "secret!"  # TODO: in production?
 # socketio = SocketIO(app, logger=True, engineio_logger=True)
 socketio = SocketIO(app)
 
-rooms = [Room(room_id=1, player1=None, player2=None)]
+rooms = [Room(room_id=1)]
 player_count = 1
 
 
@@ -18,7 +18,7 @@ player_count = 1
 def join(message):
     # TODO: for now, forcefully put 'x' as game character
     global player_count  # TODO: may be a bad hack?
-    new_player = Player(uid=player_count, uname=_sanitize_str(message["uname"]), game_character='x', room_id=None, ws_sid=request.sid)
+    new_player = Player(uid=player_count, uname=_sanitize_str(message["uname"]), game_character='x', ws_sid=request.sid)
     session["player_uid"] = player_count
     player_count += 1
     _allot_room(new_player)
@@ -95,7 +95,7 @@ def _allot_room(player):
     session["room_id"] = new_room_id
     player.room_id = new_room_id
     player.room_id = new_room_id
-    rooms.append(Room(room_id=new_room_id, player1=player, player2=None))
+    rooms.append(Room(room_id=new_room_id, player1=player))
     emit("player_data", player.to_dict(), to=player.ws_sid)
     send("Please wait for new players to join.")
 
