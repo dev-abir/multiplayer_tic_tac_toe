@@ -1,0 +1,81 @@
+h1 {
+    font-family: Arial, Helvetica, sans-serif;
+    letter-spacing: 0.125*2.3rem;
+}
+
+#board {
+    padding: 3rem;
+    text-align: center;
+}
+
+.square
+
+.game_cross{
+    margin-top: 15%;
+    height: 90*1.8px;
+    width: 90*1.8px;
+}
+
+.game_circle{
+    margin-top: 15%;
+    height: 90*1.8px;
+    width: 90*1.8px;
+}
+
+.square {
+    float: left;
+    clear: right;
+    width: 100*2.3px;
+    height: 100*2.3px;
+    background-color: #f8F9fa;
+}
+
+.square:hover {
+    cursor: pointer;
+    color: lightcoral;
+}
+
+.row {
+    margin: 0 auto;
+    width: 302*2.3px;
+}
+
+.top {
+    border-bottom-color: rgba(52, 58, 64, 0.500);
+    border-bottom-style: solid;
+    border-bottom-width: 1*2.3px;
+}
+
+.bottom {
+    border-top-color: rgba(52, 58, 64, 0.500);
+    border-top-style: solid;
+    border-top-width: 1*2.3px;
+}
+
+.left {
+    border-right-color: rgba(52, 58, 64, 0.500);
+    border-right-style: solid;
+    border-right-width: 1*2.3px;
+}
+
+.right {
+    border-left-color: rgba(52, 58, 64, 0.500);
+    border-left-style: solid;
+    border-left-width: 1*2.3px;
+}
+
+.top_right_square {
+    border-top-right-radius: 0.25*2.3rem;
+}
+
+#squareI {
+    border-bottom-right-radius: 0.25*2.3rem;
+}
+
+#squareG {
+    border-bottom-left-radius: 0.25*2.3rem;
+}
+
+#squareA {
+    border-top-left-radius: 0.25*2.3rem;
+}
