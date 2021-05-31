@@ -55,7 +55,7 @@ def on_disconnect():
 
     for room in rooms:
         if room.room_id == room_id:
-            room.game.reset_board()
+            room.game.reset_game()
             if room.player1 is not None and room.player1.uid == player_uid:
                 if room.player2 is not None:  # TODO: to delete empty rooms (test it once)
                     send(f"Player {room.player1.uname} is disconnected.\n"

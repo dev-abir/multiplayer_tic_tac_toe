@@ -3,8 +3,8 @@ class Game:
         self.board = [['-', '-', '-'], ['-', '-', '-'], ['-', '-', '-']]  # don't use [['-'] * 3] * 3
         self._last_character_turned = None  # to track which player has given the last turn
 
-    def reset_board(self):
-        self.board = [['-', '-', '-'], ['-', '-', '-'], ['-', '-', '-']]
+    def reset_game(self):
+        self.__init__()
 
     def game_state(self):
         for i in range(0, 3):
