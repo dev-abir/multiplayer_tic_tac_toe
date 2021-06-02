@@ -1,4 +1,5 @@
 import json
+import os
 
 from flask import Flask, request, session, escape
 from flask_socketio import SocketIO, emit, send
@@ -110,4 +111,5 @@ def entry():
 
 
 if __name__ == '__main__':
-    socketio.run(app)
+    # using port for Heroku...
+    socketio.run(app, host="0.0.0.0", port=os.environ["PORT"] or 3000)
