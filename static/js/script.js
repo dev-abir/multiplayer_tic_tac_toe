@@ -31,7 +31,7 @@ socket.on("get_board", function (board_data) {
 
 			if (board_data[i][j] == 'o') {
 				if (!targetElement.firstChild) { // if there's no symbol in the square
-					 // create new object, recycling old ones can cause problems...
+					// create new object, recycling old ones can cause problems...
 					var circleImg = document.createElement("img");
 					circleImg.setAttribute('class', 'game_circle');
 					circleImg.setAttribute('src', CIRCLE_IMG_URL);
@@ -58,10 +58,10 @@ socket.on("get_board", function (board_data) {
 
 socket.on("player_data", function (data) {
 	player_data = data;
-	console.log("player char", player_data.game_character);
+	console.log(player_data);
 });
 
-socket.on("game_draw", function(message) {
+socket.on("game_draw", function (message) {
 	console.log(message);
 	console.log("refreshing page within 3 seconds for a new game...");
 	setTimeout(function () {
@@ -69,7 +69,7 @@ socket.on("game_draw", function(message) {
 	}, 3 * 1000);
 });
 
-socket.on("game_won", function(message) {
+socket.on("game_won", function (message) {
 	console.log(message);
 	console.log("refreshing page within 3 seconds for a new game...");
 	setTimeout(function () {
@@ -79,5 +79,9 @@ socket.on("game_won", function(message) {
 
 function fire(event, posX, posY) {
 	console.log("turn", posX, posY);
-	socket.emit("turn", { "posX": posX, "posY": posY });
+	socket.emit("turn", {
+		"posX": posX,
+		"posY": posY,
+		"room_id": player_data.room_id // TODO: cuz of cookie-related bug in the back-end, delete this after fix
+	});
 }

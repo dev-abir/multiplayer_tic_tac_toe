@@ -4,8 +4,8 @@ from Game import Game
 
 
 class Player:
-    def __init__(self, uid, uname, game_character, ws_sid, room_id=None):
-        self.uid = uid
+    def __init__(self, uname, game_character, ws_sid, room_id=None):
+        self.uid = id(self)
         self.uname = uname
         self.game_character = game_character
         self.room_id = room_id
@@ -20,8 +20,8 @@ class Player:
 
 
 class Room:
-    def __init__(self, room_id, player1=None, player2=None):
-        self.room_id = room_id
+    def __init__(self, player1=None, player2=None):
+        self.room_id = id(self)
         self.player1 = player1
         self.player2 = player2
         self.game = Game()
@@ -44,8 +44,8 @@ class Room:
         if self._add_player(new_player):
             other_player = self.player1 if new_player != self.player1 else self.player2
             if other_player is not None:  # check if the new player joined is the 1st player of the room...
-                new_player.game_character = 'o'
-                send("Sorry, you are forced to use 'o', as your game character.")
+                new_player.game_character = 'o' if other_player.game_character == 'x' else 'x'
+                send(f"Sorry, you are forced to use '{new_player.game_character}', as your game character.")
                 send(f"You are playing with {other_player.uname}", to=new_player.ws_sid)
                 send(f"You are playing with {new_player.uname}", to=other_player.ws_sid)
                 self.broadcast_board()
