@@ -1,17 +1,22 @@
 import json
 import os
 
-from flask import Flask, request, session, escape
+from flask import Flask, request, session, escape, render_template, redirect
 from flask_socketio import SocketIO, emit, send
+from wtforms import Form, StringField, validators
 
 from Room import Room, Player
 
-app = Flask(__name__, static_url_path='', static_folder="static")
+app = Flask(__name__, static_url_path='', static_folder="static", template_folder="templates")
 app.config["SECRET_KEY"] = "secret!"  # TODO: in production?
 # socketio = SocketIO(app, logger=True, engineio_logger=True)
 socketio = SocketIO(app)
 
 rooms = [Room()]
+
+
+class UserDataForm(Form):
+    uname = StringField('uname', [validators.Length(min=1, max=25)])
 
 
 @socketio.event
@@ -52,7 +57,6 @@ def turn(json_str):
             room.broadcast_event("game_draw", '')
 
 
-'''
 @socketio.on("disconnect")
 def on_disconnect():
     # TODO: expecting cookie isn't tampered with
@@ -86,7 +90,6 @@ def on_disconnect():
                 return
 
     print(f"[warning] Player with uid {player_uid} isn't deleted.")
-'''
 
 
 @socketio.on("disconnect")
@@ -99,7 +102,7 @@ def on_disconnect():
         if room.room_id == room_id:
             room.game.reset_game()
             if (room.player1 is not None and
-                room.player1.uid == player_uid and
+                    room.player1.uid == player_uid and
                     room.player2 is not None):
                 send(f"Player {room.player1.uname} is disconnected.\n"
                      "Please wait for new players to join.\n", to=room.player2.ws_sid)
@@ -119,10 +122,9 @@ def on_disconnect():
 def _allot_room(player):
     for room in rooms:
         if room.add_player(player):
-
             # FIXME: cannot edit session cookie directly...
             session["room_id"] = room.room_id
-            
+
             player.room_id = room.room_id
             room.broadcast_player_data()
             return  # if add player is success, exit from this func
@@ -145,9 +147,20 @@ def entry():
     return app.send_static_file("index.html")
 
 
+@app.route('/game', methods=['POST', 'GET'])
+def enter_game():
+    # TODO: create separate template dir
+    form = UserDataForm(request.form)
+    if form.validate():
+        # TODO: set player data through cookie here, instead
+        # of getting through ws in join event...
+        return render_template("game.html", uname=form.uname.data)  # TODO: don't use a form class, something simpler?
+    return redirect('/')
+
+
 if __name__ == '__main__':
     # using port for Heroku...
-    try:
+    if os.environ.get("PORT"):
         socketio.run(app, host="0.0.0.0", port=os.environ["PORT"])
-    except:
+    else:
         socketio.run(app, host="0.0.0.0", port=5000)

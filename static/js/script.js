@@ -12,7 +12,7 @@ var img1 = new Image();
 img1.setAttribute('src', CROSS_IMG_URL);
 
 socket.on('connect', function () {
-	socket.emit('join', { uname: new Date().toLocaleTimeString() }, (res) => {
+	socket.emit('join', { uname: uname }, (res) => {
 		console.log('ok');
 	});
 });
