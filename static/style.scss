@@ -1,14 +1,46 @@
 h1 {
+    margin-right: 7%;
     font-family: Arial, Helvetica, sans-serif;
+    text-decoration: underline;
     letter-spacing: 0.125*2.3rem;
 }
 
 #board {
+    margin-left: 10%;
     padding: 3rem;
     text-align: center;
 }
 
-.square
+
+.game{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.message_box{
+    position: absolute;
+    height: 50vh;
+    width: 10vw;
+    border: black solid 3px;
+}
+
+#player_msg{
+    color: black;
+    text-align: center;
+    
+}
+
+#msg_scr{
+    display: block;
+    height: 50vh;
+    width:20vw;
+    color: azure;
+    background: url("https://img.archiexpo.com/images_ae/photo-g/4510-3959501.jpg");
+    border: 5px dotted black;
+    overflow-y: auto;
+}
+
 
 .game_cross{
     margin-top: 15%;
@@ -25,14 +57,14 @@ h1 {
 .square {
     float: left;
     clear: right;
-    width: 100*2.3px;
-    height: 100*2.3px;
+    width: 100*2px;
+    height: 100*2px;
     background-color: #f8F9fa;
 }
 
 .square:hover {
     cursor: pointer;
-    color: lightcoral;
+    color: coral;
 }
 
 .row {
@@ -78,4 +110,44 @@ h1 {
 
 #squareA {
     border-top-left-radius: 0.25*2.3rem;
+}
+
+.messages{
+    font-size: xx-large;
+    font-weight: bold;
+    color: rgb(9, 9, 48);
+    background: rgba(243, 243, 207,0.4);
+    border: 2px dotted black;
+}
+
+.intropg{
+    background-color: coral;
+}
+
+.intropg>form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30vh;
+}
+
+.nm{
+    margin-left: 7.5%;
+    margin-bottom: 3%;
+}
+
+.frminp1{
+    border-radius: 8px 8px 8px 8px;
+    height: 6vh;
+    width: 20vw;
+    font-size: larger;
+}
+
+.frmbut1{
+    border-radius: 8px 8px 8px 8px;
+    height: 6vh;
+    width: 10vw;
+    background-color: yellow;
+    font-size:larger ;
 }
