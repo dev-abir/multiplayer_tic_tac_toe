@@ -10,6 +10,7 @@ var img0 = new Image();
 img0.setAttribute('src', CIRCLE_IMG_URL);
 var img1 = new Image();
 img1.setAttribute('src', CROSS_IMG_URL);
+var b_dat = null;
 
 socket.on('connect', function () {
 	socket.emit('join', { uname: uname }, (res) => {
@@ -18,10 +19,16 @@ socket.on('connect', function () {
 });
 
 socket.on("message", function (message) {
+	var msg = document.createElement('h2');
+	var txt = document.createTextNode(message);
+	msg.appendChild(txt);
+	msg.setAttribute('id',"player_msg");
+	document.getElementById('msg_scr').appendChild(msg);
 	console.log(message);
 });
 
 socket.on("get_board", function (board_data) {
+	b_dat = board_data;
 	console.log(board_data);
 	var x = 0;
 	var charCodeA = 'A'.charCodeAt(0);
@@ -59,11 +66,20 @@ socket.on("get_board", function (board_data) {
 socket.on("player_data", function (data) {
 	player_data = data;
 	console.log(player_data);
+	var msg = document.createElement('h2');
+	var txt = document.createTextNode(player_data.uname+" is in the game");
+	msg.appendChild(txt);
+	msg.setAttribute('id',"player_msg");
+	document.getElementById('msg_scr').appendChild(msg);
 });
 
 socket.on("game_draw", function (message) {
 	console.log(message);
-	console.log("refreshing page within 3 seconds for a new game...");
+	var msg = document.createElement('h2');
+	var txt = document.createTextNode("GAME DRAW!!\nrefreshing page within 3 seconds for a new game...");
+	msg.appendChild(txt);
+	msg.setAttribute('id',"player_msg");
+	document.getElementById('msg_scr').appendChild(msg);
 	setTimeout(function () {
 		window.location.reload();
 	}, 3 * 1000);
@@ -72,6 +88,11 @@ socket.on("game_draw", function (message) {
 socket.on("game_won", function (message) {
 	console.log(message);
 	console.log("refreshing page within 3 seconds for a new game...");
+	var msg = document.createElement('h2');
+	var txt = document.createTextNode(message+" \n refreshing page within 3 seconds for a new game...");
+	msg.appendChild(txt);
+	msg.setAttribute('id',"player_msg");
+	document.getElementById('msg_scr').appendChild(msg);
 	setTimeout(function () {
 		window.location.reload();
 	}, 3 * 1000);

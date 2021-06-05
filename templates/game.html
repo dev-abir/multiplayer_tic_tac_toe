@@ -6,49 +6,57 @@
 
 <body style="background-color: lightsalmon;">
 
-<h1>Welcome {{ uname }}</h1>
+    <h1>Welcome {{ uname }}</h1>
 
-<div class="container" id="board">
-    <!-- Heading -->
-    <div class="row" id="row1">
-        <h1>Tic Tac Toe</h1>
-    </div>
-    <!-- Top Row -->
-    <div class="row" id="row2">
-        <div class="top left square" id="squareA" onclick="fire(event, 0, 0)">
-            <img class = "game_cross" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Red_X.svg/1200px-Red_X.svg.png">
+    <div class="game">
+        <div class="container" id="board">
+            <!-- Heading -->
+            <div class="row" id="row1">
+                <h1>Tic Tac Toe</h1>
+            </div>
+            <!-- Top Row -->
+            <div class="row" id="row2">
+                <div class="top left square" id="squareA" onclick="fire(event, 0, 0)">
+                </div>
+                <div class="top middle square" id="squareB" onclick="fire(event, 0, 1)">
+
+                </div>
+                <div class="top right square" id="squareC" onclick="fire(event, 0, 2)"></div>
+            </div>
+            <!-- Middle Row -->
+            <div class="row" id="row3">
+                <div class="middle left square" id="squareD" onclick="fire(event, 1, 0)"></div>
+                <div class="middle center square" id="squareE" onclick="fire(event, 1, 1)"></div>
+                <div class="middle right square" id="squareF" onclick="fire(event, 1, 2)"></div>
+            </div>
+            <!-- Bottom Row -->
+            <div class="row" id="row4">
+                <div class="bottom left square" id="squareG" onclick="fire(event, 2, 0)"></div>
+                <div class="bottom middle square" id="squareH" onclick="fire(event, 2, 1)"></div>
+                <div class="bottom right square" id="squareI" onclick="fire(event, 2, 2)"></div>
+            </div>
         </div>
-        <div class="top middle square" id="squareB" onclick="fire(event, 0, 1)">
-
+        <div class="message-box">
+            <p class="messages">GAME LOGS</p>
+            <div id="msg_scr">
+                <!--<img src = "https://usabilitygeek.com/wp-content/uploads/2018/06/usability-metrics-quantify-usability-system-lead.jpg">-->
+            </div>
         </div>
-        <div class="top right square" id="squareC" onclick="fire(event, 0, 2)"></div>
     </div>
-    <!-- Middle Row -->
-    <div class="row" id="row3">
-        <div class="middle left square" id="squareD" onclick="fire(event, 1, 0)"></div>
-        <div class="middle center square" id="squareE" onclick="fire(event, 1, 1)"></div>
-        <div class="middle right square" id="squareF" onclick="fire(event, 1, 2)"></div>
-    </div>
-    <!-- Bottom Row -->
-    <div class="row" id="row4">
-        <div class="bottom left square" id="squareG" onclick="fire(event, 2, 0)"></div>
-        <div class="bottom middle square" id="squareH" onclick="fire(event, 2, 1)"></div>
-        <div class="bottom right square" id="squareI" onclick="fire(event, 2, 2)"></div>
-    </div>
-</div>
 
 
-<script>
-    var uname = "{{ uname }}";
-</script>
+    <script>
+        var uname = "{{ uname }}";
+    </script>
 
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
         integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
         crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<script src="/js/script.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="/js/script.js" type="text/javascript" charset="utf-8"></script>
 </body>
 
 </html>
