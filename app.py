@@ -163,4 +163,4 @@ if __name__ == '__main__':
     if os.environ.get("PORT"):
         socketio.run(app, host="0.0.0.0", port=os.environ["PORT"])
     else:
-        socketio.run(app, host="0.0.0.0", port=5000)
+        socketio.run(app, port=5000)
